@@ -21605,6 +21605,7 @@ const createGhostPost = (adminToken, content, adminDomain, meta) => __awaiter(vo
         yield axios_1.default.post(url, payload, { headers });
     }
     catch (err) {
+        core.debug(String(err));
         return Promise.reject(err);
     }
 });

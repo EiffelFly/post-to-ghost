@@ -13,17 +13,13 @@ const run = async () => {
   const GHOST_ADMIN_DOMAIN = core.getInput("GHOST_ADMIN_DOMAIN");
 
   if (!GHOST_ADMIN_DOMAIN) {
-    core.setFailed(
-      `GHOST_ADMIN_DOMAIN must be provided`
-    );
+    core.setFailed(`GHOST_ADMIN_DOMAIN must be provided`);
   }
 
   const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_KEY");
 
   if (!GHOST_ADMIN_API_KEY) {
-    core.setFailed(
-      `GHOST_ADMIN_API_KEY must be provided`
-    );
+    core.setFailed(`GHOST_ADMIN_API_KEY must be provided`);
   }
 
   const ghostAdminToken = prepareToken(GHOST_ADMIN_API_KEY);
@@ -205,6 +201,7 @@ const createGhostPost = async (
     const payload = { posts: [{ html: content, status: "draft", ...meta }] };
     await axios.post(url, payload, { headers });
   } catch (err) {
+    core.debug(String(err));
     return Promise.reject(err);
   }
 };
