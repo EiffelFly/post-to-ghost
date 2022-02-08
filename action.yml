@@ -4,9 +4,10 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub token"
     require: ture
-  GHOST_BASE_API_URL: 
+    default: ${{ github.token }}
+  GHOST_BASE_API_URL:
     description: "Ghost base api url"
-    require: ture
+    require: false
   GHOST_CONTENT_API_TOKEN:
     description: "Ghost content api token"
     require: false
@@ -20,4 +21,3 @@ inputs:
 runs:
   using: "node16"
   main: "dist/index.js"
-  
