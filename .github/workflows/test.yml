@@ -42,3 +42,6 @@ jobs:
       - id: run
         name: Run the action
         uses: ./
+        with:
+          TARGET_FOLDER: test_docs
+
