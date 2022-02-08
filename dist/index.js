@@ -21582,18 +21582,6 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         core.info(`renamed: ${file.filename}`);
     }
 });
-run();
-// From GitHub API, the response api is path-like.
-// For example: test_docs/test.md
-const getContent = (fileName) => {
-    const fullPath = path_1.default.join(process.cwd(), fileName);
-    const fileContent = fs_1.default.readFileSync(fullPath, "utf-8");
-    const { content, data } = (0, gray_matter_1.default)(fileContent.trim());
-    return {
-        content,
-        meta: data,
-    };
-};
 const prepareToken = (adminKey) => {
     const [id, secret] = adminKey.split(":");
     const token = jsonwebtoken_1.default.sign({}, Buffer.from(secret, "hex"), {
@@ -21615,6 +21603,18 @@ const createGhostPost = (adminToken, content, adminDomain, meta) => __awaiter(vo
         return Promise.reject(err);
     }
 });
+// From GitHub API, the response api is path-like.
+// For example: test_docs/test.md
+const getContent = (fileName) => {
+    const fullPath = path_1.default.join(process.cwd(), fileName);
+    const fileContent = fs_1.default.readFileSync(fullPath, "utf-8");
+    const { content, data } = (0, gray_matter_1.default)(fileContent.trim());
+    return {
+        content,
+        meta: data,
+    };
+};
+run();
 
 
 /***/ }),
