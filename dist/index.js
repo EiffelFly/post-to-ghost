@@ -21466,11 +21466,11 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
     const GHOST_ADMIN_DOMAIN = core.getInput("GHOST_ADMIN_DOMAIN");
     if (!GHOST_ADMIN_DOMAIN) {
-        core.setFailed(`GHOST_ADMIN_DOMAIN must be provided, don't need to add any slash`);
+        core.setFailed(`GHOST_ADMIN_DOMAIN must be provided`);
     }
-    const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_TOKEN");
+    const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_KEY");
     if (!GHOST_ADMIN_API_KEY) {
-        core.setFailed(`GHOST_ADMIN_API_KEY must be provided, don't need to add any slash`);
+        core.setFailed(`GHOST_ADMIN_API_KEY must be provided`);
     }
     const ghostAdminToken = prepareToken(GHOST_ADMIN_API_KEY);
     if (!TARGET_FOLDER) {

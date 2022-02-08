@@ -14,15 +14,15 @@ const run = async () => {
 
   if (!GHOST_ADMIN_DOMAIN) {
     core.setFailed(
-      `GHOST_ADMIN_DOMAIN must be provided, don't need to add any slash`
+      `GHOST_ADMIN_DOMAIN must be provided`
     );
   }
 
-  const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_TOKEN");
+  const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_KEY");
 
   if (!GHOST_ADMIN_API_KEY) {
     core.setFailed(
-      `GHOST_ADMIN_API_KEY must be provided, don't need to add any slash`
+      `GHOST_ADMIN_API_KEY must be provided`
     );
   }
 
