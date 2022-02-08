@@ -1,0 +1,23 @@
+name: post-to-ghost
+descriptiom: "Post to Ghost instance once target folder have new post"
+inputs:
+  GITHUB_TOKEN:
+    description: "GitHub token"
+    require: ture
+  GHOST_BASE_API_URL: 
+    description: "Ghost base api url"
+    require: ture
+  GHOST_CONTENT_API_TOKEN:
+    description: "Ghost content api token"
+    require: false
+  GHOST_ADMIN_API_TOKEN:
+    description: "Ghost admin api token"
+    require: false
+  TARGET_FOLDER:
+    description: "Where store articles"
+    require: false
+
+runs:
+  using: "node15"
+  main: "dist/index.js"
+  
