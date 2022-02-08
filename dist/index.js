@@ -8338,7 +8338,7 @@ const github = __importStar(__nccwpck_require__(5438));
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     // glob all the file
-    const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
+    // const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
     const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
     // const GHOST_BASE_API_URL = core.getInput("GHOST_BASE_API_URL");
     // const GHOST_CONTENT_API_TOKEN = core.getInput("GHOST_CONTENT_API_TOKEN");
@@ -8347,6 +8347,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     core.debug(`Payload keys: ${Object.keys(github.context.payload)}`);
     // Get event name
     const eventName = github.context.eventName;
+    core.info(eventName);
     // Define the base and head commits to be extracted from the payload.
     let base;
     let head;
@@ -8402,12 +8403,14 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     for (const file of files) {
+        core.info(file.filename);
         if (file.status === "modified") {
             modified.push(file);
-            core.info(file.filename);
         }
     }
+    core.setOutput("modified", JSON.stringify(modified));
 });
+run();
 
 
 /***/ }),
