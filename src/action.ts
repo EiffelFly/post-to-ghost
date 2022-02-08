@@ -3,14 +3,17 @@ import * as github from "@actions/github";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import jwt from "jsonwebtoken";
+import axios from "axios";
 
 const run = async () => {
   // glob all the file
   const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
   const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
-  // const GHOST_BASE_API_URL = core.getInput("GHOST_BASE_API_URL");
+  const GHOST_ADMIN_DOMAIN = core.getInput("GHOST_ADMIN_DOMAIN");
   // const GHOST_CONTENT_API_TOKEN = core.getInput("GHOST_CONTENT_API_TOKEN");
-  // const GHOST_ADMIN_API_TOKEN = core.getInput("GHOST_ADMIN_API_TOKEN");
+  const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_TOKEN");
+  const ghostAdminToken = prepareToken(GHOST_ADMIN_API_KEY);
 
   if (!TARGET_FOLDER) {
     core.setFailed(
@@ -136,6 +139,13 @@ const run = async () => {
   for (const file of added) {
     const { content, meta } = getContent(file.filename);
     core.info(`added: ${file.filename} - ${JSON.stringify(meta)}`);
+
+    try {
+      await createGhostPost(ghostAdminToken, content, GHOST_ADMIN_DOMAIN, meta);
+      core.info(`Post created: ${file.filename}`);
+    } catch (err) {
+      core.setFailed(`Something went wrong when try to create post, ${err}`);
+    }
   }
 
   for (const file of modified) {
@@ -167,4 +177,35 @@ const getContent = (fileName: string) => {
     content,
     meta: data,
   };
+};
+
+const prepareToken = (adminKey: string): string => {
+  const [id, secret] = adminKey.split(":");
+  const token = jwt.sign({}, Buffer.from(secret, "hex"), {
+    keyid: id,
+    algorithm: "HS256",
+    expiresIn: "5m",
+    audience: `/v3/admin/`,
+  });
+  return token;
+};
+
+type GhostPostMeta = {
+  [key: string]: string;
+};
+
+const createGhostPost = async (
+  adminToken: string,
+  content: string,
+  adminDomain: string,
+  meta: GhostPostMeta
+) => {
+  try {
+    const url = `${adminDomain}/ghost/api/v3/admin/posts/`;
+    const headers = { Authorization: `Ghost ${adminToken}` };
+    const payload = { posts: [{ html: content, status: "draft", ...meta }] };
+    await axios.post(url, payload, { headers });
+  } catch (err) {
+    return Promise.reject(err);
+  }
 };
