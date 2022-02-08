@@ -9,8 +9,10 @@ const run = async () => {
   // const GHOST_CONTENT_API_TOKEN = core.getInput("GHOST_CONTENT_API_TOKEN");
   // const GHOST_ADMIN_API_TOKEN = core.getInput("GHOST_ADMIN_API_TOKEN");
 
-  if (!TARGET_FOLDER){
-    core.setFailed(`Target folder must be provided, don't need to add any slash`)
+  if (!TARGET_FOLDER) {
+    core.setFailed(
+      `Target folder must be provided, don't need to add any slash`
+    );
   }
 
   // Debug log the payload
@@ -99,6 +101,11 @@ const run = async () => {
 
   for (const file of files) {
     const pathList = file.filename.split("/");
+    core.info(
+      `${pathList.toString()}, ${pathList.includes(
+        TARGET_FOLDER
+      )}, ${TARGET_FOLDER}`
+    );
     if (file.status === "modified" && pathList.includes(TARGET_FOLDER)) {
       modified.push(file);
       core.info(`Changed file: ${file.filename}`);
