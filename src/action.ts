@@ -3,7 +3,7 @@ import * as github from "@actions/github";
 
 const run = async () => {
   // glob all the file
-  const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
+  // const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
   const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
   // const GHOST_BASE_API_URL = core.getInput("GHOST_BASE_API_URL");
   // const GHOST_CONTENT_API_TOKEN = core.getInput("GHOST_CONTENT_API_TOKEN");
@@ -14,6 +14,8 @@ const run = async () => {
 
   // Get event name
   const eventName = github.context.eventName;
+
+  core.info(eventName);
 
   // Define the base and head commits to be extracted from the payload.
   let base: string | undefined;
@@ -92,9 +94,9 @@ const run = async () => {
   }
 
   for (const file of files) {
+    core.info(file.filename);
     if (file.status === "modified") {
       modified.push(file);
-      core.info(file.filename);
     }
   }
 
