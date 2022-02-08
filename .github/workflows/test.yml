@@ -42,6 +42,3 @@ jobs:
       - id: run
         name: Run the action
         uses: ./
-
-      - name: Print output
-        run: echo 'steps.run.outputs.modified=${{ steps.run.outputs.modified }}'
