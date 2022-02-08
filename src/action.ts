@@ -102,3 +102,5 @@ const run = async () => {
 
   core.setOutput("modified", JSON.stringify(modified));
 };
+
+run();
