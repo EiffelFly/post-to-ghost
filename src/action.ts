@@ -165,20 +165,6 @@ const run = async () => {
   }
 };
 
-run();
-
-// From GitHub API, the response api is path-like.
-// For example: test_docs/test.md
-const getContent = (fileName: string) => {
-  const fullPath = path.join(process.cwd(), fileName);
-  const fileContent = fs.readFileSync(fullPath, "utf-8");
-  const { content, data } = matter(fileContent.trim());
-  return {
-    content,
-    meta: data,
-  };
-};
-
 const prepareToken = (adminKey: string): string => {
   const [id, secret] = adminKey.split(":");
   const token = jwt.sign({}, Buffer.from(secret, "hex"), {
@@ -209,3 +195,23 @@ const createGhostPost = async (
     return Promise.reject(err);
   }
 };
+
+// From GitHub API, the response api is path-like.
+// For example: test_docs/test.md
+const getContent = (fileName: string) => {
+  const fullPath = path.join(process.cwd(), fileName);
+  const fileContent = fs.readFileSync(fullPath, "utf-8");
+  const { content, data } = matter(fileContent.trim());
+  return {
+    content,
+    meta: data,
+  };
+};
+
+run();
+
+
+
+
+
+
