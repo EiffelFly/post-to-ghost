@@ -89,7 +89,11 @@ const run = async () => {
 
   // Get the changed files from the response payload.
   const files = response.data.files;
+  let added = [];
   let modified = [];
+  let addedModified = [];
+  let removed = [];
+  let renamed = [];
 
   if (!files) {
     core.setFailed(
@@ -101,15 +105,48 @@ const run = async () => {
 
   for (const file of files) {
     const pathList = file.filename.split("/");
-    core.info(
-      `${pathList.toString()}, ${pathList.includes(
-        TARGET_FOLDER
-      )}, ${TARGET_FOLDER}, ${file.status}`
-    );
-    if (file.status === "modified" && pathList.includes(TARGET_FOLDER)) {
-      modified.push(file);
-      core.info(`Changed file: ${file.filename}`);
+    if (pathList.includes(TARGET_FOLDER)) {
+      switch (file.status) {
+        case "modified":
+          modified.push(file);
+          addedModified.push(file);
+          break;
+        case "added":
+          added.push(file);
+          addedModified.push(file);
+          break;
+        case "removed":
+          removed.push(file);
+          break;
+        case "renamed":
+          renamed.push(file);
+          break;
+        default:
+          core.setFailed(
+            `One of your files includes an unsupported file status '${file.status}', expected 'added', 'modified', 'removed', or 'renamed'.`
+          );
+      }
     }
+  }
+
+  for (const file of added) {
+    core.info(`added: ${file.filename}`);
+  }
+
+  for (const file of modified){
+    core.info(`modified: ${file.filename}`);
+  }
+
+  for (const file of addedModified){
+    core.info(`added+modified: ${file.filename}`);
+  }
+
+  for (const file of removed){
+    core.info(`removed: ${file.filename}`)
+  }
+
+  for (const file of renamed){
+    core.info(`renamed: ${file.filename}`)
   }
 };
 
