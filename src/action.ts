@@ -1,5 +1,8 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 
 const run = async () => {
   // glob all the file
@@ -103,6 +106,7 @@ const run = async () => {
     return;
   }
 
+  // Check whether file is in target folder then add to list
   for (const file of files) {
     const pathList = file.filename.split("/");
     if (pathList.includes(TARGET_FOLDER)) {
@@ -130,24 +134,37 @@ const run = async () => {
   }
 
   for (const file of added) {
-    core.info(`added: ${file.filename}`);
+    const { content, meta } = getContent(file.filename);
+    core.info(`added: ${file.filename} - ${JSON.stringify(meta)}`);
   }
 
-  for (const file of modified){
+  for (const file of modified) {
     core.info(`modified: ${file.filename}`);
   }
 
-  for (const file of addedModified){
+  for (const file of addedModified) {
     core.info(`added+modified: ${file.filename}`);
   }
 
-  for (const file of removed){
-    core.info(`removed: ${file.filename}`)
+  for (const file of removed) {
+    core.info(`removed: ${file.filename}`);
   }
 
-  for (const file of renamed){
-    core.info(`renamed: ${file.filename}`)
+  for (const file of renamed) {
+    core.info(`renamed: ${file.filename}`);
   }
 };
 
 run();
+
+// From GitHub API, the response api is path-like.
+// For example: test_docs/test.md
+const getContent = (fileName: string) => {
+  const fullPath = path.join(process.cwd(), fileName);
+  const fileContent = fs.readFileSync(fullPath, "utf-8");
+  const { content, data } = matter(fileContent.trim());
+  return {
+    content,
+    meta: data,
+  };
+};
