@@ -18,6 +18,6 @@ inputs:
     require: false
 
 runs:
-  using: "node15"
+  using: "node16"
   main: "dist/index.js"
   
