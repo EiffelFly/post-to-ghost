@@ -5,8 +5,8 @@ inputs:
     description: "GitHub token"
     require: ture
     default: ${{ github.token }}
-  GHOST_BASE_API_URL:
-    description: "Ghost base api url"
+  GHOST_ADMIN_DOMAIN:
+    description: "Ghost base admin api domain"
     require: false
   GHOST_CONTENT_API_TOKEN:
     description: "Ghost content api token"

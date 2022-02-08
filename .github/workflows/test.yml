@@ -44,4 +44,6 @@ jobs:
         uses: ./
         with:
           TARGET_FOLDER: test_docs
-
+          GHOST_ADMIN_DOMAIN: ${{ secrets.GHOST_ADMIN_DOMAIN }}
+          GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+          GHOST_CONTENT_API_KEY: ${{ secrets.GHOST_CONTENT_API_TOKEN }}
