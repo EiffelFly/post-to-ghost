@@ -21602,10 +21602,10 @@ const createGhostPost = (adminToken, content, adminDomain, meta) => __awaiter(vo
         const url = `${adminDomain}/ghost/api/v3/admin/posts/`;
         const headers = { Authorization: `Ghost ${adminToken}` };
         const payload = { posts: [Object.assign({ html: content, status: "draft" }, meta)] };
+        core.info(headers.Authorization);
         yield axios_1.default.post(url, payload, { headers });
     }
     catch (err) {
-        core.debug(String(err));
         return Promise.reject(err);
     }
 });
