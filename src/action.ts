@@ -3,11 +3,15 @@ import * as github from "@actions/github";
 
 const run = async () => {
   // glob all the file
-  // const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
+  const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
   const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
   // const GHOST_BASE_API_URL = core.getInput("GHOST_BASE_API_URL");
   // const GHOST_CONTENT_API_TOKEN = core.getInput("GHOST_CONTENT_API_TOKEN");
   // const GHOST_ADMIN_API_TOKEN = core.getInput("GHOST_ADMIN_API_TOKEN");
+
+  if (!TARGET_FOLDER){
+    core.setFailed(`Target folder must be provided, don't need to add any slash`)
+  }
 
   // Debug log the payload
   core.debug(`Payload keys: ${Object.keys(github.context.payload)}`);
@@ -94,13 +98,12 @@ const run = async () => {
   }
 
   for (const file of files) {
-    core.info(file.filename);
-    if (file.status === "modified") {
+    const pathList = file.filename.split("/");
+    if (file.status === "modified" && pathList.includes(TARGET_FOLDER)) {
       modified.push(file);
+      core.info(`Changed file: ${file.filename}`);
     }
   }
-
-  core.setOutput("modified", JSON.stringify(modified));
 };
 
 run();
