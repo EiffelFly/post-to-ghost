@@ -11,8 +11,21 @@ const run = async () => {
   const TARGET_FOLDER = core.getInput("TARGET_FOLDER");
   const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
   const GHOST_ADMIN_DOMAIN = core.getInput("GHOST_ADMIN_DOMAIN");
-  // const GHOST_CONTENT_API_TOKEN = core.getInput("GHOST_CONTENT_API_TOKEN");
+
+  if (!GHOST_ADMIN_DOMAIN) {
+    core.setFailed(
+      `GHOST_ADMIN_DOMAIN must be provided, don't need to add any slash`
+    );
+  }
+
   const GHOST_ADMIN_API_KEY = core.getInput("GHOST_ADMIN_API_TOKEN");
+
+  if (!GHOST_ADMIN_API_KEY) {
+    core.setFailed(
+      `GHOST_ADMIN_API_KEY must be provided, don't need to add any slash`
+    );
+  }
+
   const ghostAdminToken = prepareToken(GHOST_ADMIN_API_KEY);
 
   if (!TARGET_FOLDER) {
@@ -209,9 +222,3 @@ const getContent = (fileName: string) => {
 };
 
 run();
-
-
-
-
-
-
