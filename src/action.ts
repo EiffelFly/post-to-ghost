@@ -97,4 +97,6 @@ const run = async () => {
       core.info(file.filename);
     }
   }
+
+  core.setOutput("modified", JSON.stringify(modified));
 };
