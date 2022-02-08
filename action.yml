@@ -18,6 +18,11 @@ inputs:
     description: "Where store articles"
     require: false
 
+outputs:
+  modified:
+    description: >
+      Array of modified files.
+
 runs:
   using: "node16"
   main: "dist/index.js"
