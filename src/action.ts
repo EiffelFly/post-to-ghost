@@ -104,7 +104,7 @@ const run = async () => {
     core.info(
       `${pathList.toString()}, ${pathList.includes(
         TARGET_FOLDER
-      )}, ${TARGET_FOLDER}`
+      )}, ${TARGET_FOLDER}, ${file.status}`
     );
     if (file.status === "modified" && pathList.includes(TARGET_FOLDER)) {
       modified.push(file);

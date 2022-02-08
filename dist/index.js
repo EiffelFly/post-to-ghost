@@ -8407,7 +8407,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     for (const file of files) {
         const pathList = file.filename.split("/");
-        core.info(`${pathList.toString()}, ${pathList.includes(TARGET_FOLDER)}, ${TARGET_FOLDER}`);
+        core.info(`${pathList.toString()}, ${pathList.includes(TARGET_FOLDER)}, ${TARGET_FOLDER}, ${file.status}`);
         if (file.status === "modified" && pathList.includes(TARGET_FOLDER)) {
             modified.push(file);
             core.info(`Changed file: ${file.filename}`);
