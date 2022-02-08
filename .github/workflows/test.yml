@@ -35,10 +35,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - id: Run
+
+      - id: run
         name: Run the action
         uses: ./
+
+      - name: Print output
+        run: echo 'steps.run.outputs.modified=${{ steps.run.outputs.modified }}'
