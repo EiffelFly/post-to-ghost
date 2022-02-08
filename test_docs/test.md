@@ -1,3 +1,8 @@
+---
+title: Test
+description: this is test file
+---
+
 This is the post-to-ghost test file
 
 1. test
