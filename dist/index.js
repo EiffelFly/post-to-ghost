@@ -21563,6 +21563,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
     }
+    // Create new post in Ghost instance
     for (const file of added) {
         const { content, meta } = getContent(file.filename);
         core.info(`added: ${file.filename} - ${JSON.stringify(meta)}`);
@@ -21574,15 +21575,19 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             core.setFailed(`Something went wrong when try to create post, ${err}`);
         }
     }
+    // Update modified post in Ghost instance
     for (const file of modified) {
         core.info(`modified: ${file.filename}`);
     }
+    // Placeholder
     for (const file of addedModified) {
         core.info(`added+modified: ${file.filename}`);
     }
+    // Delete removed post in Ghost instance
     for (const file of removed) {
         core.info(`removed: ${file.filename}`);
     }
+    // Renamed post in Ghost instance
     for (const file of renamed) {
         core.info(`renamed: ${file.filename}`);
     }
@@ -21598,6 +21603,7 @@ const prepareToken = (adminKey) => {
     return token;
 };
 const createGhostPost = (adminToken, content, adminDomain, meta) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
     try {
         const url = `${adminDomain}/ghost/api/v3/admin/posts/`;
         const headers = { Authorization: `Ghost ${adminToken}` };
@@ -21606,6 +21612,9 @@ const createGhostPost = (adminToken, content, adminDomain, meta) => __awaiter(vo
         yield axios_1.default.post(url, payload, { headers });
     }
     catch (err) {
+        if (axios_1.default.isAxiosError(err)) {
+            core.error((_e = err.response) === null || _e === void 0 ? void 0 : _e.data);
+        }
         return Promise.reject(err);
     }
 });

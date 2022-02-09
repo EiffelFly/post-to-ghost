@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import jwt from "jsonwebtoken";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const run = async () => {
   // glob all the file
@@ -144,7 +144,8 @@ const run = async () => {
       }
     }
   }
-
+  
+  // Create new post in Ghost instance
   for (const file of added) {
     const { content, meta } = getContent(file.filename);
     core.info(`added: ${file.filename} - ${JSON.stringify(meta)}`);
@@ -157,18 +158,22 @@ const run = async () => {
     }
   }
 
+  // Update modified post in Ghost instance
   for (const file of modified) {
     core.info(`modified: ${file.filename}`);
   }
-
+  
+  // Placeholder
   for (const file of addedModified) {
     core.info(`added+modified: ${file.filename}`);
   }
 
+  // Delete removed post in Ghost instance
   for (const file of removed) {
     core.info(`removed: ${file.filename}`);
   }
 
+  // Renamed post in Ghost instance
   for (const file of renamed) {
     core.info(`renamed: ${file.filename}`);
   }
@@ -202,6 +207,9 @@ const createGhostPost = async (
     core.info(headers.Authorization);
     await axios.post(url, payload, { headers });
   } catch (err) {
+    if (axios.isAxiosError(err)){
+      core.error(err.response?.data)
+    }
     return Promise.reject(err);
   }
 };
