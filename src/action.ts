@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import jwt from "jsonwebtoken";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 const run = async () => {
   // glob all the file
